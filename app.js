@@ -15,28 +15,43 @@ function ItunesController(){
 
     for(key in songList) {
       var song = songList[key]
-      songDisplay.innerHTML +=
-      `
-        <div class="col-xs-12 col-md-6 col-lg-4">
-            <div class="flex-it">
-                <img src=${song.albumArt}>
-                <audio controls preload="none">
-                <source src="${song.preview}" type="audio/mp4" /></audio>
-            </div>
-            <h3>${song.title}</h3>
-            
-            <p>Album: ${song.collection}</p>
-            <p>By: ${song.artist}</p>
-            <p>Price: $${song.price}</p>
-        </div>
-      `
+      if (song.id === 'song') {
+         songDisplay.innerHTML +=
+        `
+          <div class="col-xs-12 col-md-6 col-lg-4">
+              <div class="flex-it">
+                  <img src=${song.albumArt}>
+                  <audio controls preload="none">
+                  <source src="${song.preview}" type="audio/mp4" /></audio>
+              </div>
+              <h3>${song.title}</h3>
+              
+              <p>Album: ${song.collection}</p>
+              <p>By: ${song.artist}</p>
+              <p>Price: $${song.price}</p>
+          </div>
+        `
+      }
     } 
     songDisplay.innerHTML += `</div>`
   }
   
-  function previewMusic(songName) {
-      
+  // event listeners :O
+  function onlyPlayOneIn(container) {
+    container.addEventListener("play", function(event) {
+    audio_elements = container.getElementsByTagName("audio")
+      for(i=0; i < audio_elements.length; i++) {
+        audio_element = audio_elements[i];
+        if (audio_element !== event.target) {
+          audio_element.pause();
+        }
+      }
+    }, true);
   }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    onlyPlayOneIn(document.body);
+  });
 }
 
 
